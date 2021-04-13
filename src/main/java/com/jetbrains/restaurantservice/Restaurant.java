@@ -2,6 +2,8 @@ package com.jetbrains.restaurantservice;
 
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Restaurant {
@@ -11,8 +13,17 @@ public class Restaurant {
     // Dalia does NOT approve!!
     private final String name;
 
-    public Restaurant(String name) {
+    private final String address;
+    private final int indoorCapacity;
+    private final int outdoorCapacity;
+    private final List<LocalDateTime> openingHours;
+
+    public Restaurant(String name, String address, int indoorCapacity, int outdoorCapacity, List<LocalDateTime> openingHours) {
         this.name = name;
+        this.address = address;
+        this.indoorCapacity = indoorCapacity;
+        this.outdoorCapacity = outdoorCapacity;
+        this.openingHours = openingHours;
     }
 
     @Override
