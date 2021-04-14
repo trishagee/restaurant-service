@@ -10,13 +10,11 @@ public class Restaurant {
     @Id
     public String id;
 
-    // Dalia does NOT approve!!
-    private final String name;
-
-    private final String address;
-    private final int indoorCapacity;
-    private final int outdoorCapacity;
-    private final List<LocalDateTime> openingHours;
+    public String name;
+    public String address;
+    public int indoorCapacity;
+    public int outdoorCapacity;
+    public List<LocalDateTime> openingHours;
 
     public Restaurant(String name, String address, int indoorCapacity, int outdoorCapacity, List<LocalDateTime> openingHours) {
         this.name = name;
