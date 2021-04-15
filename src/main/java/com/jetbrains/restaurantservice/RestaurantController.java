@@ -1,5 +1,6 @@
 package com.jetbrains.restaurantservice;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -8,6 +9,11 @@ import java.util.List;
 
 @RestController
 public class RestaurantController {
+	private final RestaurantRepository restaurantRepository;
+
+	public RestaurantController(RestaurantRepository restaurantRepository) {
+		this.restaurantRepository = restaurantRepository;
+	}
 
 	@GetMapping("/restaurant")
 	public Restaurant restaurant() {
@@ -16,6 +22,6 @@ public class RestaurantController {
 
 	@GetMapping("/restaurants")
 	public List<Restaurant> getRestaurants() {
-		return new ArrayList<>();
+		return restaurantRepository.findAll();
 	}
 }
