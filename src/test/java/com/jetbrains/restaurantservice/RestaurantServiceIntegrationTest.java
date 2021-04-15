@@ -1,7 +1,6 @@
 package com.jetbrains.restaurantservice;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,20 +23,6 @@ class RestaurantServiceIntegrationTest {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
-
-    @Test
-    void shouldGetAStubRestaurantFromTheRestaurantService() throws Exception {
-        this.mockMvc.perform(get("/restaurant"))
-                    .andExpect(status().isOk())
-                    .andExpect(content().json("""
-                                                      {"id":null,
-                                                      "name":"Dalia's",
-                                                      "address":"",
-                                                      "indoorCapacity":0,
-                                                      "outdoorCapacity":0,
-                                                      "openingHours":[]}
-                                                      """));
-    }
 
     @Test
     @DisplayName("Should return a list of all restaurants in the database")
@@ -84,19 +69,42 @@ class RestaurantServiceIntegrationTest {
                                                       """));
     }
 
+
+    @Test
+    void shouldGetARestaurantById() throws Exception {
+        insertFourRestaurants();
+
+        this.mockMvc.perform(get("/restaurants/1"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json("""
+                                                      {"id" : "1",
+                                                       "name" : "Dalia's",
+                                                       "address" : "Rochester",
+                                                       "indoorCapacity" : 20,
+                                                       "outdoorCapacity" : 50,
+                                                       "openingHours" : [ ]
+                                                      }
+                                                      """));
+    }
+
+    @Test
+    @DisplayName("Should return a what when the restaurant is not there")
+    void shouldReturnAWhatWhenTheRestaurantIsNotThere() throws Exception {
+        this.mockMvc.perform(get("/restaurants/785697865"))
+                    .andExpect(status().isNotFound());
+    }
+
     private void insertFourRestaurants() {
         restaurantRepository.deleteAll();
 
-        Restaurant dalia = new Restaurant("1","Dalia's", "Rochester", 20, 50, List.of());
-        Restaurant helen = new Restaurant("2","Helen's", "Leek", 30, 10, List.of());
+        Restaurant dalia = new Restaurant("1", "Dalia's", "Rochester", 20, 50, List.of());
+        Restaurant helen = new Restaurant("2", "Helen's", "Leek", 30, 10, List.of());
         Restaurant trisha = new Restaurant("3", "Trisha's", "Sevilla", 12, 8, List.of());
         Restaurant mala = new Restaurant("4", "Mala's", "New Delhi", 25, 0, List.of());
 
         restaurantRepository.saveAll(List.of(dalia, helen, trisha, mala));
     }
 
-    // TODO: get all restaurants
-    // TODO: get a restaurant by ID
     // TODO: update a restaurant's details
     // TODO: delete a restaurant
     // TODO: create a restaurant
