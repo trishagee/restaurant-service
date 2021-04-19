@@ -109,6 +109,8 @@ class RestaurantServiceIntegrationTest {
     // TODO: delete a restaurant
     // TODO: create a restaurant
 
+    // TODO: figure out the best way to add seed data
+
     // Restaurant Admins:
     // {id: admin_id,
     //  name: bob
