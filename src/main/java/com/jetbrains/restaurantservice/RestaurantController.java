@@ -1,10 +1,7 @@
 package com.jetbrains.restaurantservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +17,11 @@ public class RestaurantController {
 	@GetMapping("/restaurants/{id}")
 	public Restaurant restaurant(@PathVariable String id) {
 		return restaurantRepository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
+	}
+
+	@DeleteMapping("/restaurants/{id}")
+	public void deleteRestaurant(@PathVariable String id) {
+		restaurantRepository.deleteById(id);
 	}
 
 	@GetMapping("/restaurants")

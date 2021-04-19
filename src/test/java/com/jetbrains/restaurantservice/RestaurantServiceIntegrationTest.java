@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -94,6 +95,37 @@ class RestaurantServiceIntegrationTest {
                     .andExpect(status().isNotFound());
     }
 
+    @Test
+    @DisplayName("Should delete a restaurant by ID")
+    void shouldDeleteARestaurantById() throws Exception {
+        // given
+        insertFourRestaurants();
+        String restaurantId = "3";
+        // check the restaurant really is there
+        this.mockMvc.perform(get("/restaurants/" + restaurantId))
+                    .andExpect(status().isOk());
+
+        // when
+        this.mockMvc.perform(delete("/restaurants/" + restaurantId))
+                    .andExpect(status().isOk());
+
+        // then
+        this.mockMvc.perform(get("/restaurants/" + restaurantId))
+                    .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Should not error if deleting a restaurant that is not there")
+    void shouldNotErrorIfDeletingARestaurantThatIsNotThere() throws Exception {
+        // given
+        insertFourRestaurants();
+        String restaurantId = "5647856473";
+
+        // when
+        this.mockMvc.perform(delete("/restaurants/" + restaurantId))
+                    .andExpect(status().isOk());
+    }
+
     private void insertFourRestaurants() {
         restaurantRepository.deleteAll();
 
@@ -106,7 +138,6 @@ class RestaurantServiceIntegrationTest {
     }
 
     // TODO: update a restaurant's details
-    // TODO: delete a restaurant
     // TODO: create a restaurant
 
     // TODO: figure out the best way to add seed data
