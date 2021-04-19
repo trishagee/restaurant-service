@@ -1,5 +1,7 @@
 package com.jetbrains.restaurantservice;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,10 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,6 +26,9 @@ class RestaurantServiceIntegrationTest {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("Should return a list of all restaurants in the database")
@@ -126,6 +131,24 @@ class RestaurantServiceIntegrationTest {
                     .andExpect(status().isOk());
     }
 
+    @Test
+    @DisplayName("Should create a new restaurant")
+    void shouldCreateANewRestaurant() throws Exception {
+        String restaurantId = "10";
+        Restaurant newRestaurant = new Restaurant(restaurantId, "New Restaurant", "London", 7, 6473, List.of());
+
+        // when
+        mockMvc.perform(post("/restaurants")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(newRestaurant)))
+               .andExpect(status().isOk());
+
+        // then
+        Optional<Restaurant> actualRestaurant = restaurantRepository.findById(restaurantId);
+        Assertions.assertTrue(actualRestaurant.isPresent());
+        Assertions.assertEquals(newRestaurant, actualRestaurant.get());
+    }
+
     private void insertFourRestaurants() {
         restaurantRepository.deleteAll();
 
@@ -138,7 +161,6 @@ class RestaurantServiceIntegrationTest {
     }
 
     // TODO: update a restaurant's details
-    // TODO: create a restaurant
 
     // TODO: figure out the best way to add seed data
 

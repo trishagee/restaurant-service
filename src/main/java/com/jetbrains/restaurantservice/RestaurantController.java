@@ -28,4 +28,9 @@ public class RestaurantController {
 	public List<Restaurant> getRestaurants() {
 		return restaurantRepository.findAll();
 	}
+
+	@PostMapping("/restaurants")
+	public void saveRestaurant(@RequestBody Restaurant restaurant) {
+		restaurantRepository.save(restaurant);
+	}
 }
