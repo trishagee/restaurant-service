@@ -3,6 +3,7 @@ package com.jetbrains.restaurantservice;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,6 +168,29 @@ class RestaurantServiceIntegrationTest {
         Optional<Restaurant> actualRestaurant = restaurantRepository.findById("2");
         Assertions.assertTrue(actualRestaurant.isPresent());
         Assertions.assertEquals(updatedDetails, actualRestaurant.get());
+    }
+
+
+    @Test
+    @DisplayName("Should only change one field when passing in just that field")
+    @Disabled("We think that 'put' should do a full replace of the object. We think additional methods might be needed for, e.g., opening hours")
+    void shouldOnlyChangeOneFieldWhenPassingInJustThatField() throws Exception {
+        // TODO: what's the actual expected behaviour? Should it be OK to pass in a single field?
+        // given
+        insertFourRestaurants();
+
+        // when
+        mockMvc.perform(put("/restaurants/3")
+                                .contentType("application/json")
+                                .content("{\"indoorCapacity\":0}"))
+               .andExpect(status().isOk());
+
+        // then
+        Optional<Restaurant> actualRestaurant = restaurantRepository.findById("3");
+        Assertions.assertTrue(actualRestaurant.isPresent());
+
+        Restaurant expected = new Restaurant("3", "Trisha's", "Sevilla", 0, 8, List.of());
+        Assertions.assertEquals(expected, actualRestaurant.get());
     }
 
     @Test

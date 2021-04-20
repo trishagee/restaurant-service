@@ -46,6 +46,7 @@ public class RestaurantController {
 	}
 
 	private boolean restaurantExists(final String id) {
+		// TODO: replace this with exists() call
 		return restaurantRepository.findById(id).isPresent();
 	}
 }
