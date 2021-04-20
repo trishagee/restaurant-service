@@ -23,8 +23,9 @@ class RestaurantControllerTest {
     void shouldFetchAllRestaurantsFromTheRepository(@Mock RestaurantRepository restaurantRepository) {
         // given
         List<Restaurant> expectedRestaurants = List.of(this.restaurant1, restaurant2);
+        // Stubbing: tell Mockito to return this list of expected restaurants if it's asked to find restaurants
         Mockito.when(restaurantRepository.findAll())
-               .then(invocationOnMock -> expectedRestaurants);
+               .thenReturn(expectedRestaurants);
         RestaurantController restaurantController = new RestaurantController(restaurantRepository);
 
         // when
@@ -56,14 +57,40 @@ class RestaurantControllerTest {
     void shouldAskTheRepositoryToDeleteARestaurantById(@Mock RestaurantRepository restaurantRepository) {
         // given
         String restaurantId = "3";
-
         RestaurantController restaurantController = new RestaurantController(restaurantRepository);
+        // Stubbing: tell Mockito that the repo should say this restaurant exists
+        Mockito.when(restaurantRepository.existsById(restaurantId))
+               .thenReturn(true);
 
         // when
         restaurantController.deleteRestaurant(restaurantId);
 
         // then
         verify(restaurantRepository).deleteById(restaurantId);
+    }
+
+    @Test
+    @DisplayName("Should error if trying to delete a restaurant that does not exist")
+    void shouldErrorIfTryingToDeleteARestaurantThatDoesNotExist(@Mock RestaurantRepository restaurantRepository) {
+        // given
+        RestaurantController restaurantController = new RestaurantController(restaurantRepository);
+
+        // when
+        Assertions.assertThrows(RestaurantNotFoundException.class,
+                                () -> restaurantController.deleteRestaurant("564756437"));
+    }
+
+    @Test
+    @DisplayName("Should ask the repository to save a restaurant")
+    void shouldAskTheRepositoryToSaveARestaurant(@Mock RestaurantRepository restaurantRepository) {
+        // given
+        RestaurantController restaurantController = new RestaurantController(restaurantRepository);
+
+        // when
+        restaurantController.saveRestaurant(restaurant1);
+
+        // then
+        verify(restaurantRepository).save(restaurant1);
         verifyNoMoreInteractions(restaurantRepository);
     }
 

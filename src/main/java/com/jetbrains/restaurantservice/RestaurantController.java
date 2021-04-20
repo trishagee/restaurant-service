@@ -12,6 +12,11 @@ public class RestaurantController {
 		this.restaurantRepository = restaurantRepository;
 	}
 
+	@GetMapping("/restaurants")
+	public List<Restaurant> getRestaurants() {
+		return restaurantRepository.findAll();
+	}
+
 	@GetMapping("/restaurants/{id}")
 	public Restaurant restaurant(@PathVariable String id) {
 		return restaurantRepository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
@@ -24,11 +29,6 @@ public class RestaurantController {
 		}
 
 		restaurantRepository.deleteById(id);
-	}
-
-	@GetMapping("/restaurants")
-	public List<Restaurant> getRestaurants() {
-		return restaurantRepository.findAll();
 	}
 
 	@PostMapping("/restaurants")
@@ -47,6 +47,6 @@ public class RestaurantController {
 
 	private boolean restaurantExists(final String id) {
 		// TODO: replace this with exists() call
-		return restaurantRepository.findById(id).isPresent();
+		return restaurantRepository.existsById(id);
 	}
 }
