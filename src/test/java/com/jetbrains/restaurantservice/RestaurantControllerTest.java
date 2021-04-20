@@ -10,7 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class RestaurantControllerTest {
@@ -50,21 +51,20 @@ class RestaurantControllerTest {
         Assertions.assertEquals(expectedRestaurants, actualRestaurants);
     }
 
-//    @Test
-//    @DisplayName("Should ask the repository to delete a restaurant by ID")
-//    void shouldAskTheRepositoryToDeleteARestaurantById(@Mock RestaurantRepository restaurantRepository) {
-//        // given
-//        String restaurantId = "3";
-//        Mockito.when(restaurantRepository.deleteById(restaurantId));
-//
-//        RestaurantController restaurantController = new RestaurantController(restaurantRepository);
-//
-//        // when
-//        restaurantController.deleteRestaurant(restaurantId);
-//
-//        // then
-//
-//
-//    }
+    @Test
+    @DisplayName("Should ask the repository to delete a restaurant by ID")
+    void shouldAskTheRepositoryToDeleteARestaurantById(@Mock RestaurantRepository restaurantRepository) {
+        // given
+        String restaurantId = "3";
+
+        RestaurantController restaurantController = new RestaurantController(restaurantRepository);
+
+        // when
+        restaurantController.deleteRestaurant(restaurantId);
+
+        // then
+        verify(restaurantRepository).deleteById(restaurantId);
+        verifyNoMoreInteractions(restaurantRepository);
+    }
 
 }
