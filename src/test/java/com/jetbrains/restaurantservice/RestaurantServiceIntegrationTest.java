@@ -94,8 +94,8 @@ class RestaurantServiceIntegrationTest {
     }
 
     @Test
-    @DisplayName("Should return a what when the restaurant is not there")
-    void shouldReturnAWhatWhenTheRestaurantIsNotThere() throws Exception {
+    @DisplayName("Should return a 404 when the restaurant is not there")
+    void shouldReturnA404WhenTheRestaurantIsNotThere() throws Exception {
         this.mockMvc.perform(get("/restaurants/785697865"))
                     .andExpect(status().isNotFound());
     }
@@ -120,15 +120,15 @@ class RestaurantServiceIntegrationTest {
     }
 
     @Test
-    @DisplayName("Should not error if deleting a restaurant that is not there")
-    void shouldNotErrorIfDeletingARestaurantThatIsNotThere() throws Exception {
+    @DisplayName("Should give a 404 if deleting a restaurant that is not there")
+    void shouldGiveA404IfDeletingARestaurantThatIsNotThere() throws Exception {
         // given
         insertFourRestaurants();
         String restaurantId = "5647856473";
 
         // when
         this.mockMvc.perform(delete("/restaurants/" + restaurantId))
-                    .andExpect(status().isOk());
+                    .andExpect(status().isNotFound());
     }
 
     @Test
@@ -149,6 +149,38 @@ class RestaurantServiceIntegrationTest {
         Assertions.assertEquals(newRestaurant, actualRestaurant.get());
     }
 
+    @Test
+    @DisplayName("Should be able to edit a restaurant details")
+    void shouldBeAbleToEditARestaurantDetails() throws Exception {
+        // given
+        insertFourRestaurants();
+
+        Restaurant updatedDetails = new Restaurant("2", "Helen's Place", "Leeky kitchen", 33, 11, List.of());
+
+        // when
+        mockMvc.perform(put("/restaurants/2")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(updatedDetails)))
+               .andExpect(status().isOk());
+
+        // then
+        Optional<Restaurant> actualRestaurant = restaurantRepository.findById("2");
+        Assertions.assertTrue(actualRestaurant.isPresent());
+        Assertions.assertEquals(updatedDetails, actualRestaurant.get());
+    }
+
+    @Test
+    @DisplayName("Should return a 404 if trying to update a restaurant that does not exist")
+    void shouldReturnA404IfTryingToUpdateARestaurantThatDoesNotExist() throws Exception {
+        Restaurant updatedDetails = new Restaurant("657486547", "Helen's Place", "Leeky kitchen", 33, 11, List.of());
+
+        // expect
+        mockMvc.perform(put("/restaurants/657486547")
+                                .contentType("application/json")
+                                .content(objectMapper.writeValueAsString(updatedDetails)))
+               .andExpect(status().isNotFound());
+    }
+
     private void insertFourRestaurants() {
         restaurantRepository.deleteAll();
 
@@ -159,8 +191,6 @@ class RestaurantServiceIntegrationTest {
 
         restaurantRepository.saveAll(List.of(dalia, helen, trisha, mala));
     }
-
-    // TODO: update a restaurant's details
 
     // TODO: figure out the best way to add seed data
 

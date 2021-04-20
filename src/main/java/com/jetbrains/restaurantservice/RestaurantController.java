@@ -19,6 +19,10 @@ public class RestaurantController {
 
 	@DeleteMapping("/restaurants/{id}")
 	public void deleteRestaurant(@PathVariable String id) {
+		if (!restaurantExists(id)) {
+			throw new RestaurantNotFoundException(id);
+		}
+
 		restaurantRepository.deleteById(id);
 	}
 
@@ -30,5 +34,18 @@ public class RestaurantController {
 	@PostMapping("/restaurants")
 	public void saveRestaurant(@RequestBody Restaurant restaurant) {
 		restaurantRepository.save(restaurant);
+	}
+
+	@PutMapping("/restaurants/{id}")
+	Restaurant replaceRestaurant(@RequestBody Restaurant updatedRestaurant, @PathVariable String id) {
+		if (!restaurantExists(id)) {
+			throw new RestaurantNotFoundException(id);
+		}
+
+		return restaurantRepository.save(updatedRestaurant);
+	}
+
+	private boolean restaurantExists(final String id) {
+		return restaurantRepository.findById(id).isPresent();
 	}
 }
