@@ -1,18 +1,12 @@
-version: '3.8'
-networks:
-  restaurant-service-network:
+version: "3.8"
 services:
   mongodb:
     image: mongo:4.4.5
     ports:
       - "27017:27017"
-    networks:
-      - restaurant-service-network
   restaurant-service:
     build: .
     ports:
       - "8080:8080"
     depends_on:
       - mongodb
-    networks:
-      - restaurant-service-network
