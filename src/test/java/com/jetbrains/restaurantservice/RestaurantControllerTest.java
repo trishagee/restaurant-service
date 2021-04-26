@@ -15,8 +15,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class RestaurantControllerTest {
-    private final Restaurant restaurant1 = new Restaurant("1", "add1", 3, 5, List.of());
-    private final Restaurant restaurant2 = new Restaurant("2", "add2", 7, 11, List.of());
+    private final Restaurant restaurant1 = new Restaurant("1", "add1", 3, List.of());
+    private final Restaurant restaurant2 = new Restaurant("2", "add2", 7, List.of());
 
     @Test
     @DisplayName("Should fetch all restaurants from the repository")

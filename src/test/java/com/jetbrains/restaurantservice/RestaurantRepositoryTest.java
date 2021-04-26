@@ -19,7 +19,7 @@ class RestaurantRepositoryTest {
     @Test
     @DisplayName("Should save and retrieve a restaurant from the database")
     void shouldSaveAndRetrieveARestaurantFromTheDatabase() {
-        Restaurant blossom = new Restaurant("Blossom", null, 0, 0, List.of());
+        Restaurant blossom = new Restaurant("Blossom", null, 0, List.of());
 
         restaurantRepository.save(blossom);
 

@@ -12,23 +12,21 @@ public class Restaurant {
 
     public String name;
     public String address;
-    public int indoorCapacity;
-    public int outdoorCapacity;
+    public int capacity;
     public List<LocalDateTime> openingHours;
 
     public Restaurant() {
     }
 
-    public Restaurant(String name, String address, int indoorCapacity, int outdoorCapacity, List<LocalDateTime> openingHours) {
-        this(null, name, address, indoorCapacity, outdoorCapacity, openingHours);
+    public Restaurant(String name, String address, int capacity, List<LocalDateTime> openingHours) {
+        this(null, name, address, capacity, openingHours);
     }
 
-    public Restaurant(String id, String name, String address, int indoorCapacity, int outdoorCapacity, List<LocalDateTime> openingHours) {
+    public Restaurant(String id, String name, String address, int capacity, List<LocalDateTime> openingHours) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.indoorCapacity = indoorCapacity;
-        this.outdoorCapacity = outdoorCapacity;
+        this.capacity = capacity;
         this.openingHours = openingHours;
     }
 

@@ -1,6 +1,5 @@
 package com.jetbrains.restaurantservice;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -44,32 +43,28 @@ class RestaurantServiceIntegrationTest {
                                                                "id" : "1",
                                                                "name" : "Dalia's",
                                                                "address" : "Rochester",
-                                                               "indoorCapacity" : 20,
-                                                               "outdoorCapacity" : 50,
+                                                               "capacity" : 20,
                                                                "openingHours" : [ ]
                                                        },
                                                        {
                                                                "id" : "2",
                                                                "name" : "Helen's",
                                                                "address" : "Leek",
-                                                               "indoorCapacity" : 30,
-                                                               "outdoorCapacity" : 10,
+                                                               "capacity" : 30,
                                                                "openingHours" : [ ]
                                                        },
                                                        {
                                                                "id" : "3",
                                                                "name" : "Trisha's",
                                                                "address" : "Sevilla",
-                                                               "indoorCapacity" : 12,
-                                                               "outdoorCapacity" : 8,
+                                                               "capacity" : 12,
                                                                "openingHours" : [ ]
                                                        },
                                                        {
                                                                "id" : "4",
                                                                "name" : "Mala's",
                                                                "address" : "New Delhi",
-                                                               "indoorCapacity" : 25,
-                                                               "outdoorCapacity" : 0,
+                                                               "capacity" : 25,
                                                                "openingHours" : [ ]
                                                        }
                                                        ]
@@ -87,8 +82,7 @@ class RestaurantServiceIntegrationTest {
                                                       {"id" : "1",
                                                        "name" : "Dalia's",
                                                        "address" : "Rochester",
-                                                       "indoorCapacity" : 20,
-                                                       "outdoorCapacity" : 50,
+                                                       "capacity" : 20,
                                                        "openingHours" : [ ]
                                                       }
                                                       """));
@@ -136,7 +130,7 @@ class RestaurantServiceIntegrationTest {
     @DisplayName("Should create a new restaurant")
     void shouldCreateANewRestaurant() throws Exception {
         String restaurantId = "10";
-        Restaurant newRestaurant = new Restaurant(restaurantId, "New Restaurant", "London", 7, 6473, List.of());
+        Restaurant newRestaurant = new Restaurant(restaurantId, "New Restaurant", "London", 7, List.of());
 
         // when
         mockMvc.perform(post("/restaurants")
@@ -156,7 +150,7 @@ class RestaurantServiceIntegrationTest {
         // given
         insertFourRestaurants();
 
-        Restaurant updatedDetails = new Restaurant("2", "Helen's Place", "Leeky kitchen", 33, 11, List.of());
+        Restaurant updatedDetails = new Restaurant("2", "Helen's Place", "Leeky kitchen", 33, List.of());
 
         // when
         mockMvc.perform(put("/restaurants/2")
@@ -182,21 +176,21 @@ class RestaurantServiceIntegrationTest {
         // when
         mockMvc.perform(put("/restaurants/3")
                                 .contentType("application/json")
-                                .content("{\"indoorCapacity\":0}"))
+                                .content("{\"capacity\":0}"))
                .andExpect(status().isOk());
 
         // then
         Optional<Restaurant> actualRestaurant = restaurantRepository.findById("3");
         Assertions.assertTrue(actualRestaurant.isPresent());
 
-        Restaurant expected = new Restaurant("3", "Trisha's", "Sevilla", 0, 8, List.of());
+        Restaurant expected = new Restaurant("3", "Trisha's", "Sevilla", 0, List.of());
         Assertions.assertEquals(expected, actualRestaurant.get());
     }
 
     @Test
     @DisplayName("Should return a 404 if trying to update a restaurant that does not exist")
     void shouldReturnA404IfTryingToUpdateARestaurantThatDoesNotExist() throws Exception {
-        Restaurant updatedDetails = new Restaurant("657486547", "Helen's Place", "Leeky kitchen", 33, 11, List.of());
+        Restaurant updatedDetails = new Restaurant("657486547", "Helen's Place", "Leeky kitchen", 33, List.of());
 
         // expect
         mockMvc.perform(put("/restaurants/657486547")
@@ -208,10 +202,10 @@ class RestaurantServiceIntegrationTest {
     private void insertFourRestaurants() {
         restaurantRepository.deleteAll();
 
-        Restaurant dalia = new Restaurant("1", "Dalia's", "Rochester", 20, 50, List.of());
-        Restaurant helen = new Restaurant("2", "Helen's", "Leek", 30, 10, List.of());
-        Restaurant trisha = new Restaurant("3", "Trisha's", "Sevilla", 12, 8, List.of());
-        Restaurant mala = new Restaurant("4", "Mala's", "New Delhi", 25, 0, List.of());
+        Restaurant dalia = new Restaurant("1", "Dalia's", "Rochester", 20, List.of());
+        Restaurant helen = new Restaurant("2", "Helen's", "Leek", 30, List.of());
+        Restaurant trisha = new Restaurant("3", "Trisha's", "Sevilla", 12, List.of());
+        Restaurant mala = new Restaurant("4", "Mala's", "New Delhi", 25, List.of());
 
         restaurantRepository.saveAll(List.of(dalia, helen, trisha, mala));
     }
