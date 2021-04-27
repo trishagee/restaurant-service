@@ -2,9 +2,11 @@ package com.jetbrains.restaurantservice;
 
 import org.springframework.data.annotation.Id;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class Restaurant {
     @Id
@@ -13,21 +15,21 @@ public class Restaurant {
     public String name;
     public String address;
     public int capacity;
-    public List<LocalDateTime> openingHours;
+    public Set<DayOfWeek> openingDays;
 
     public Restaurant() {
     }
 
-    public Restaurant(String name, String address, int capacity, List<LocalDateTime> openingHours) {
-        this(null, name, address, capacity, openingHours);
+    public Restaurant(String name, String address, int capacity, Set<DayOfWeek> openingDays) {
+        this(null, name, address, capacity, openingDays);
     }
 
-    public Restaurant(String id, String name, String address, int capacity, List<LocalDateTime> openingHours) {
+    public Restaurant(String id, String name, String address, int capacity, Set<DayOfWeek> openingDays) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.capacity = capacity;
-        this.openingHours = openingHours;
+        this.openingDays = openingDays;
     }
 
     @Override

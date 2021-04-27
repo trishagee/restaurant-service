@@ -9,14 +9,15 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class RestaurantControllerTest {
-    private final Restaurant restaurant1 = new Restaurant("1", "add1", 3, List.of());
-    private final Restaurant restaurant2 = new Restaurant("2", "add2", 7, List.of());
+    private final Restaurant restaurant1 = new Restaurant("1", "add1", 3, Set.of());
+    private final Restaurant restaurant2 = new Restaurant("2", "add2", 7, Set.of());
 
     @Test
     @DisplayName("Should fetch all restaurants from the repository")

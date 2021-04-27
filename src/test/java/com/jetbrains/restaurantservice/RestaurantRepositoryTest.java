@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,7 +20,7 @@ class RestaurantRepositoryTest {
     @Test
     @DisplayName("Should save and retrieve a restaurant from the database")
     void shouldSaveAndRetrieveARestaurantFromTheDatabase() {
-        Restaurant blossom = new Restaurant("Blossom", null, 0, List.of());
+        Restaurant blossom = new Restaurant("Blossom", null, 0, Set.of());
 
         restaurantRepository.save(blossom);
 

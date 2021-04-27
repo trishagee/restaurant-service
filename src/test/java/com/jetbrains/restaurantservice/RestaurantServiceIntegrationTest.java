@@ -12,7 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import static java.time.DayOfWeek.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,28 +45,28 @@ class RestaurantServiceIntegrationTest {
                                                                "name" : "Dalia's",
                                                                "address" : "Rochester",
                                                                "capacity" : 20,
-                                                               "openingHours" : [ ]
+                                                               "openingDays" : [ "MONDAY" ]
                                                        },
                                                        {
                                                                "id" : "2",
                                                                "name" : "Helen's",
                                                                "address" : "Leek",
                                                                "capacity" : 30,
-                                                               "openingHours" : [ ]
+                                                               "openingDays" : [ "SUNDAY","SATURDAY" ]
                                                        },
                                                        {
                                                                "id" : "3",
                                                                "name" : "Trisha's",
                                                                "address" : "Sevilla",
                                                                "capacity" : 12,
-                                                               "openingHours" : [ ]
+                                                               "openingDays" : [ "TUESDAY","WEDNESDAY","THURSDAY" ]
                                                        },
                                                        {
                                                                "id" : "4",
                                                                "name" : "Mala's",
                                                                "address" : "New Delhi",
                                                                "capacity" : 25,
-                                                               "openingHours" : [ ]
+                                                               "openingDays" : [ "TUESDAY", "THURSDAY" ]
                                                        }
                                                        ]
                                                       """));
@@ -82,7 +84,7 @@ class RestaurantServiceIntegrationTest {
                                                        "name" : "Dalia's",
                                                        "address" : "Rochester",
                                                        "capacity" : 20,
-                                                       "openingHours" : [ ]
+                                                       "openingDays" : [ "MONDAY" ]
                                                       }
                                                       """));
     }
@@ -129,7 +131,7 @@ class RestaurantServiceIntegrationTest {
     @DisplayName("Should create a new restaurant")
     void shouldCreateANewRestaurant() throws Exception {
         String restaurantId = "10";
-        Restaurant newRestaurant = new Restaurant(restaurantId, "New Restaurant", "London", 7, List.of());
+        Restaurant newRestaurant = new Restaurant(restaurantId, "New Restaurant", "London", 7, Set.of());
 
         // when
         mockMvc.perform(post("/restaurants")
@@ -149,7 +151,7 @@ class RestaurantServiceIntegrationTest {
         // given
         insertFourRestaurants();
 
-        Restaurant updatedDetails = new Restaurant("2", "Helen's Place", "Leeky kitchen", 33, List.of());
+        Restaurant updatedDetails = new Restaurant("2", "Helen's Place", "Leeky kitchen", 33, Set.of());
 
         // when
         mockMvc.perform(put("/restaurants/2")
@@ -182,14 +184,14 @@ class RestaurantServiceIntegrationTest {
         Optional<Restaurant> actualRestaurant = restaurantRepository.findById("3");
         Assertions.assertTrue(actualRestaurant.isPresent());
 
-        Restaurant expected = new Restaurant("3", "Trisha's", "Sevilla", 0, List.of());
+        Restaurant expected = new Restaurant("3", "Trisha's", "Sevilla", 0, Set.of());
         Assertions.assertEquals(expected, actualRestaurant.get());
     }
 
     @Test
     @DisplayName("Should return a 404 if trying to update a restaurant that does not exist")
     void shouldReturnA404IfTryingToUpdateARestaurantThatDoesNotExist() throws Exception {
-        Restaurant updatedDetails = new Restaurant("657486547", "Helen's Place", "Leeky kitchen", 33, List.of());
+        Restaurant updatedDetails = new Restaurant("657486547", "Helen's Place", "Leeky kitchen", 33, Set.of());
 
         // expect
         mockMvc.perform(put("/restaurants/657486547")
@@ -201,10 +203,10 @@ class RestaurantServiceIntegrationTest {
     private void insertFourRestaurants() {
         restaurantRepository.deleteAll();
 
-        Restaurant dalia = new Restaurant("1", "Dalia's", "Rochester", 20, List.of());
-        Restaurant helen = new Restaurant("2", "Helen's", "Leek", 30, List.of());
-        Restaurant trisha = new Restaurant("3", "Trisha's", "Sevilla", 12, List.of());
-        Restaurant mala = new Restaurant("4", "Mala's", "New Delhi", 25, List.of());
+        Restaurant dalia = new Restaurant("1", "Dalia's", "Rochester", 20, Set.of(MONDAY));
+        Restaurant helen = new Restaurant("2", "Helen's", "Leek", 30, Set.of(SATURDAY, SUNDAY));
+        Restaurant trisha = new Restaurant("3", "Trisha's", "Sevilla", 12, Set.of(TUESDAY, WEDNESDAY, THURSDAY));
+        Restaurant mala = new Restaurant("4", "Mala's", "New Delhi", 25, Set.of(TUESDAY, THURSDAY));
 
         restaurantRepository.saveAll(List.of(dalia, helen, trisha, mala));
     }
