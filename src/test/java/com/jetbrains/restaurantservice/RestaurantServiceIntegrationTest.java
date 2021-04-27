@@ -1,7 +1,6 @@
 package com.jetbrains.restaurantservice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +14,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import static java.time.DayOfWeek.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,39 +38,39 @@ class RestaurantServiceIntegrationTest {
         // Given:
         insertFourRestaurants();
 
-        this.mockMvc.perform(get("/restaurants"))
-                    .andExpect(status().isOk())
-                    .andExpect(content().json("""
-                                                      [{
-                                                               "id" : "1",
-                                                               "name" : "Dalia's",
-                                                               "address" : "Rochester",
-                                                               "capacity" : 20,
-                                                               "openingDays" : [ "MONDAY" ]
-                                                       },
-                                                       {
-                                                               "id" : "2",
-                                                               "name" : "Helen's",
-                                                               "address" : "Leek",
-                                                               "capacity" : 30,
-                                                               "openingDays" : [ "SUNDAY","SATURDAY" ]
-                                                       },
-                                                       {
-                                                               "id" : "3",
-                                                               "name" : "Trisha's",
-                                                               "address" : "Sevilla",
-                                                               "capacity" : 12,
-                                                               "openingDays" : [ "TUESDAY","WEDNESDAY","THURSDAY" ]
-                                                       },
-                                                       {
-                                                               "id" : "4",
-                                                               "name" : "Mala's",
-                                                               "address" : "New Delhi",
-                                                               "capacity" : 25,
-                                                               "openingDays" : [ "TUESDAY", "THURSDAY" ]
-                                                       }
-                                                       ]
-                                                      """));
+        mockMvc.perform(get("/restaurants"))
+               .andExpect(status().isOk())
+               .andExpect(content().json("""
+                                                 [{
+                                                          "id" : "1",
+                                                          "name" : "Dalia's",
+                                                          "address" : "Rochester",
+                                                          "capacity" : 20,
+                                                          "openingDays" : [ "MONDAY" ]
+                                                  },
+                                                  {
+                                                          "id" : "2",
+                                                          "name" : "Helen's",
+                                                          "address" : "Leek",
+                                                          "capacity" : 30,
+                                                          "openingDays" : [ "SUNDAY","SATURDAY" ]
+                                                  },
+                                                  {
+                                                          "id" : "3",
+                                                          "name" : "Trisha's",
+                                                          "address" : "Sevilla",
+                                                          "capacity" : 12,
+                                                          "openingDays" : [ "TUESDAY","WEDNESDAY","THURSDAY" ]
+                                                  },
+                                                  {
+                                                          "id" : "4",
+                                                          "name" : "Mala's",
+                                                          "address" : "New Delhi",
+                                                          "capacity" : 25,
+                                                          "openingDays" : [ "TUESDAY", "THURSDAY" ]
+                                                  }
+                                                  ]
+                                                 """));
     }
 
 
@@ -77,23 +78,23 @@ class RestaurantServiceIntegrationTest {
     void shouldGetARestaurantById() throws Exception {
         insertFourRestaurants();
 
-        this.mockMvc.perform(get("/restaurants/1"))
-                    .andExpect(status().isOk())
-                    .andExpect(content().json("""
-                                                      {"id" : "1",
-                                                       "name" : "Dalia's",
-                                                       "address" : "Rochester",
-                                                       "capacity" : 20,
-                                                       "openingDays" : [ "MONDAY" ]
-                                                      }
-                                                      """));
+        mockMvc.perform(get("/restaurants/1"))
+               .andExpect(status().isOk())
+               .andExpect(content().json("""
+                                         {"id" : "1",
+                                          "name" : "Dalia's",
+                                          "address" : "Rochester",
+                                          "capacity" : 20,
+                                          "openingDays" : [ "MONDAY" ]
+                                         }
+                                         """));
     }
 
     @Test
     @DisplayName("Should return a 404 when the restaurant is not there")
     void shouldReturnA404WhenTheRestaurantIsNotThere() throws Exception {
-        this.mockMvc.perform(get("/restaurants/785697865"))
-                    .andExpect(status().isNotFound());
+        mockMvc.perform(get("/restaurants/785697865"))
+               .andExpect(status().isNotFound());
     }
 
     @Test
@@ -103,28 +104,27 @@ class RestaurantServiceIntegrationTest {
         insertFourRestaurants();
         String restaurantId = "3";
         // check the restaurant really is there
-        this.mockMvc.perform(get("/restaurants/" + restaurantId))
-                    .andExpect(status().isOk());
+        mockMvc.perform(get("/restaurants/" + restaurantId))
+               .andExpect(status().isOk());
 
         // when
-        this.mockMvc.perform(delete("/restaurants/" + restaurantId))
-                    .andExpect(status().isOk());
+        mockMvc.perform(delete("/restaurants/" + restaurantId))
+               .andExpect(status().isOk());
 
         // then
-        this.mockMvc.perform(get("/restaurants/" + restaurantId))
-                    .andExpect(status().isNotFound());
+        mockMvc.perform(get("/restaurants/" + restaurantId))
+               .andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("Should give a 404 if deleting a restaurant that is not there")
     void shouldGiveA404IfDeletingARestaurantThatIsNotThere() throws Exception {
         // given
-        insertFourRestaurants();
         String restaurantId = "5647856473";
 
         // when
-        this.mockMvc.perform(delete("/restaurants/" + restaurantId))
-                    .andExpect(status().isNotFound());
+        mockMvc.perform(delete("/restaurants/" + restaurantId))
+               .andExpect(status().isNotFound());
     }
 
     @Test
@@ -141,8 +141,8 @@ class RestaurantServiceIntegrationTest {
 
         // then
         Optional<Restaurant> actualRestaurant = restaurantRepository.findById(restaurantId);
-        Assertions.assertTrue(actualRestaurant.isPresent());
-        Assertions.assertEquals(newRestaurant, actualRestaurant.get());
+        assertTrue(actualRestaurant.isPresent());
+        assertEquals(newRestaurant, actualRestaurant.get());
     }
 
     @Test
@@ -161,8 +161,8 @@ class RestaurantServiceIntegrationTest {
 
         // then
         Optional<Restaurant> actualRestaurant = restaurantRepository.findById("2");
-        Assertions.assertTrue(actualRestaurant.isPresent());
-        Assertions.assertEquals(updatedDetails, actualRestaurant.get());
+        assertTrue(actualRestaurant.isPresent());
+        assertEquals(updatedDetails, actualRestaurant.get());
     }
 
 
@@ -182,10 +182,10 @@ class RestaurantServiceIntegrationTest {
 
         // then
         Optional<Restaurant> actualRestaurant = restaurantRepository.findById("3");
-        Assertions.assertTrue(actualRestaurant.isPresent());
+        assertTrue(actualRestaurant.isPresent());
 
         Restaurant expected = new Restaurant("3", "Trisha's", "Sevilla", 0, Set.of());
-        Assertions.assertEquals(expected, actualRestaurant.get());
+        assertEquals(expected, actualRestaurant.get());
     }
 
     @Test
