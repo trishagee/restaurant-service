@@ -1,7 +1,6 @@
 package com.jetbrains.restaurantservice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,29 +164,6 @@ class RestaurantServiceIntegrationTest {
         assertEquals(updatedDetails, actualRestaurant.get());
     }
 
-
-    @Test
-    @DisplayName("Should only change one field when passing in just that field")
-    @Disabled("We think that 'put' should do a full replace of the object. We think additional methods might be needed for, e.g., opening hours")
-    void shouldOnlyChangeOneFieldWhenPassingInJustThatField() throws Exception {
-        // TODO: what's the actual expected behaviour? Should it be OK to pass in a single field?
-        // given
-        insertFourRestaurants();
-
-        // when
-        mockMvc.perform(put("/restaurants/3")
-                                .contentType("application/json")
-                                .content("{\"capacity\":0}"))
-               .andExpect(status().isOk());
-
-        // then
-        Optional<Restaurant> actualRestaurant = restaurantRepository.findById("3");
-        assertTrue(actualRestaurant.isPresent());
-
-        Restaurant expected = new Restaurant("3", "Trisha's", "Sevilla", 0, Set.of());
-        assertEquals(expected, actualRestaurant.get());
-    }
-
     @Test
     @DisplayName("Should return a 404 if trying to update a restaurant that does not exist")
     void shouldReturnA404IfTryingToUpdateARestaurantThatDoesNotExist() throws Exception {
@@ -211,12 +187,4 @@ class RestaurantServiceIntegrationTest {
         restaurantRepository.saveAll(List.of(dalia, helen, trisha, mala));
     }
 
-    // TODO: figure out the best way to add seed data
-
-    // Restaurant Admins:
-    // {id: admin_id,
-    //  name: bob
-    //  password:
-    //  email: ,
-    //  restaurant_id: int}
 }
