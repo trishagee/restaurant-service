@@ -1,0 +1,58 @@
+openapi: "3.0.3"
+info:
+  title: "Restaurant Service API"
+  description: "Restaurant Service API. This is a simple service providing CRUD functionality for Restaurant meta data."
+  version: "1.0.0"
+servers:
+  - url: "https://localhost:8080"
+paths:
+  /restaurants:
+    get:
+      summary: "GET restaurants"
+      operationId: "getRestaurants"
+      responses:
+        "200":
+          description: "OK"
+    post:
+      summary: "POST restaurants"
+      operationId: "saveRestaurant"
+      responses:
+        "200":
+          description: "OK"
+  /restaurants/{id}:
+    get:
+      summary: "GET restaurants/{id}"
+      operationId: "restaurant"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+    put:
+      summary: "PUT restaurants/{id}"
+      operationId: "replaceRestaurant"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+    delete:
+      summary: "DELETE restaurants/{id}"
+      operationId: "deleteRestaurant"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
