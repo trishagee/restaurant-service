@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "name": "Dalia's",
+    "address": "Rochester",
+    "capacity": 20,
+    "openingDays": [
+      "MONDAY"
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Helen's",
+    "address": "Leek",
+    "capacity": 30,
+    "openingDays": [
+      "SATURDAY",
+      "SUNDAY"
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Trisha's",
+    "address": "Sevilla",
+    "capacity": 12,
+    "openingDays": [
+      "THURSDAY",
+      "WEDNESDAY",
+      "TUESDAY"
+    ]
+  },
+  {
+    "id": "4",
+    "name": "Mala's",
+    "address": "New Delhi",
+    "capacity": 25,
+    "openingDays": [
+      "TUESDAY",
+      "THURSDAY"
+    ]
+  }
+]

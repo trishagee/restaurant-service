@@ -1,0 +1,12 @@
+GET http://localhost:8080/restaurants/1
+
+<> 2021-04-30T151338.200.json
+
+###
+
+GET http://localhost:8080/restaurants
+
+<> 2021-04-30T151138.200.json
+
+###
+
