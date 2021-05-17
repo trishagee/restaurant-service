@@ -71,17 +71,6 @@ class RestaurantControllerTest {
     }
 
     @Test
-    @DisplayName("Should error if trying to delete a restaurant that does not exist")
-    void shouldErrorIfTryingToDeleteARestaurantThatDoesNotExist(@Mock RestaurantRepository restaurantRepository) {
-        // given
-        RestaurantController restaurantController = new RestaurantController(restaurantRepository);
-
-        // when
-        Assertions.assertThrows(RestaurantNotFoundException.class,
-                                () -> restaurantController.deleteRestaurant("564756437"));
-    }
-
-    @Test
     @DisplayName("Should ask the repository to save a restaurant")
     void shouldAskTheRepositoryToSaveARestaurant(@Mock RestaurantRepository restaurantRepository) {
         // given
@@ -93,6 +82,41 @@ class RestaurantControllerTest {
         // then
         verify(restaurantRepository).save(restaurant1);
         verifyNoMoreInteractions(restaurantRepository);
+    }
+
+    @Test
+    @DisplayName("Should error if trying to find a restaurant that does not exist")
+    void shouldErrorIfTryingToFindARestaurantThatDoesNotExist(@Mock RestaurantRepository restaurantRepository) {
+        // given
+        RestaurantController restaurantController = new RestaurantController(restaurantRepository);
+
+        // when
+        Assertions.assertThrows(RestaurantNotFoundException.class,
+                                () -> restaurantController.restaurant("564756437"));
+    }
+
+    @Test
+    @DisplayName("Should error if trying to delete a restaurant that does not exist")
+    void shouldErrorIfTryingToDeleteARestaurantThatDoesNotExist(@Mock RestaurantRepository restaurantRepository) {
+        // given
+        RestaurantController restaurantController = new RestaurantController(restaurantRepository);
+
+        // when
+        Assertions.assertThrows(RestaurantNotFoundException.class,
+                                () -> restaurantController.deleteRestaurant("564756437"));
+    }
+
+    @Test
+    @DisplayName("Should error if trying to update a restaurant that does not exist")
+    void shouldErrorIfTryingToUpdateARestaurantThatDoesNotExist(@Mock RestaurantRepository restaurantRepository) {
+        // given
+        RestaurantController restaurantController = new RestaurantController(restaurantRepository);
+        String restaurantId = "564756437";
+        Restaurant updatedRestaurant = new Restaurant(restaurantId, "name", "address", 11, Set.of());
+
+        // when
+        Assertions.assertThrows(RestaurantNotFoundException.class,
+                                () -> restaurantController.replaceRestaurant(updatedRestaurant, restaurantId));
     }
 
 }
