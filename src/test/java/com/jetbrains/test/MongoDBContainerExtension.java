@@ -1,4 +1,4 @@
-package com.jetbrains.restaurantservice;
+package com.jetbrains.test;
 
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;

@@ -1,6 +1,7 @@
 package com.jetbrains.restaurantservice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jetbrains.test.MongoDBContainerExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
