@@ -12,6 +12,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,14 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Testcontainers
 class RestaurantServiceIntegrationTest {
     @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4.5");
-
-    @BeforeAll
-    public static void startContainerAndPublicPortIsAvailable() {
-        mongoDBContainer.start();
-    }
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {
