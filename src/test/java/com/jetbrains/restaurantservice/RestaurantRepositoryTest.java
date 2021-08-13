@@ -1,7 +1,6 @@
 package com.jetbrains.restaurantservice;
 
 import com.jetbrains.test.MongoDBContainerExtension;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,9 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ExtendWith(MongoDBContainerExtension.class)
-@Disabled("Not sure why, but this doesn't work from Maven. Works as an individual run")
 class RestaurantRepositoryTest {
-
     @Autowired
     RestaurantRepository restaurantRepository;
 
