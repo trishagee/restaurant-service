@@ -10,7 +10,7 @@ public class MongoDBContainerExtension implements BeforeAllCallback, AfterAllCal
 
     @Override
     public void beforeAll(ExtensionContext context) {
-        mongoDBContainer = new MongoDBContainer("mongo:4.4.6");
+        mongoDBContainer = new MongoDBContainer("mongo:5.0.2");
         mongoDBContainer.start();
         System.setProperty("spring.data.mongodb.uri", mongoDBContainer.getReplicaSetUrl());
     }
