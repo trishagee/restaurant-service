@@ -5,5 +5,9 @@ job("Build restaurant-service") {
 	            mvn clean install
             """.trimIndent()
         }
+
+        service("mongo:5.0.2") {
+            alias("mongodb")
+        }
     }
 }
