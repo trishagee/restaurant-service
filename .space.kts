@@ -1,4 +1,6 @@
 job("Build and publish restaurant-service container") {
+    val containerTagVersion = "v0.\$JB_SPACE_EXECUTION_NUMBER"
+
     container(displayName = "Run mvn package", image = "maven:3.8.2-openjdk-16") {
         shellScript {
             content = """
@@ -27,7 +29,7 @@ job("Build and publish restaurant-service container") {
         }
 
         push("registry.jetbrains.team/p/blossom/containers/restaurant-service") {
-            tags("0.\$JB_SPACE_EXECUTION_NUMBER-\$JB_SPACE_GIT_BRANCH")
+            tags(containerTagVersion)
         }
     }
 }
