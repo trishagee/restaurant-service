@@ -3,6 +3,8 @@ job("Build restaurant-service") {
         shellScript {
             content = """
 	            mvn clean package
+                mkdir $mountDir/share/target/
+                cp -r target/*.jar $mountDir/share/target
             """.trimIndent()
         }
 
