@@ -25,7 +25,7 @@ job("Build and publish restaurant-service container") {
         build {
             context = "."
             file = "./Dockerfile"
-            labels["vendor"] = "GalacticTravels"
+            labels["vendor"] = "JetBrains"
         }
 
         push("registry.jetbrains.team/p/blossom/containers/restaurant-service") {
