@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.jetbrains</groupId>
     <artifactId>RestaurantService</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.5-SNAPSHOT</version>
     <name>RestaurantService</name>
     <description>Demo project for Spring Boot</description>
     <properties>
