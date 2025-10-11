@@ -14,7 +14,7 @@ public class MongoDBContainerExtension implements AfterAllCallback, BeforeAllCal
     @Override
     public void beforeAll(ExtensionContext context) {
         // When running locally, spin up a test container
-        mongoDBContainer = new MongoDBContainer("mongo:5.0.2");
+        mongoDBContainer = new MongoDBContainer("mongo:8.0.12");
         mongoDBContainer.start();
         mongoDBContainer.waitingFor(Wait.forListeningPort()
                                         .withStartupTimeout(Duration.ofSeconds(180L)));

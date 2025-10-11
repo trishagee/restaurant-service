@@ -1,7 +1,6 @@
-version: "3.8"
 services:
   mongodb:
-    image: mongo:5.0.5
+    image: mongo:8.0.12
     ports:
       - "27017:27017"
   restaurant-service:
